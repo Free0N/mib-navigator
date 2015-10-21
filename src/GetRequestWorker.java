@@ -241,7 +241,7 @@ public class GetRequestWorker extends SwingWorker
         {
             return "";  
         }
-        catch(SNMPBadValueException e)
+        catch(SNMPBadValueException | SNMPGetException e)
         {
             return e.getMessage();
         }
@@ -256,10 +256,6 @@ public class GetRequestWorker extends SwingWorker
         catch(UnknownHostException e) 
         {
             return "Unknown host: " + e.getMessage();
-        }
-        catch(SNMPGetException e)
-        {
-            return e.getMessage();
         }
         catch(Exception e) //not recommended, but exceptional circumstances will likely always prevent successful execution of the GetRequest process
         {
@@ -312,13 +308,9 @@ public class GetRequestWorker extends SwingWorker
             if (listeners[i] == GetRequestListener.class) 
             {
                 final GetRequestListener currentListener = (GetRequestListener)listeners[i + 1];
-                Runnable doFireAddressResolved = new Runnable() 
-                {
-                    public void run() 
-                    {
-                        currentListener.hostAddressResolved(addressString, resolvedAddress);
-                    }
-                };
+                Runnable doFireAddressResolved = () -> {
+					currentListener.hostAddressResolved(addressString, resolvedAddress);
+				};
                 SwingUtilities.invokeLater(doFireAddressResolved);
             }
         }
@@ -333,13 +325,9 @@ public class GetRequestWorker extends SwingWorker
             if (listeners[i] == GetRequestListener.class) 
             {
                 final GetRequestListener currentListener = (GetRequestListener)listeners[i + 1];
-                Runnable doFireResultReceived = new Runnable() 
-                {
-                    public void run() 
-                    {
-                        currentListener.requestResultReceived(result);
-                    }
-                };
+                Runnable doFireResultReceived = () -> {
+					currentListener.requestResultReceived(result);
+				};
                 SwingUtilities.invokeLater(doFireResultReceived);
             }
         }
@@ -354,13 +342,9 @@ public class GetRequestWorker extends SwingWorker
             if (listeners[i] == GetRequestListener.class) 
             {
                 final GetRequestListener currentListener = (GetRequestListener)listeners[i + 1];
-                Runnable doRequestTerminated = new Runnable() 
-                {
-                    public void run() 
-                    {
-                        currentListener.requestTerminated(statusMessage);
-                    }
-                };
+                Runnable doRequestTerminated = () -> {
+					currentListener.requestTerminated(statusMessage);
+				};
                 SwingUtilities.invokeLater(doRequestTerminated);
             }
         }

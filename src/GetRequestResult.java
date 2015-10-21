@@ -23,7 +23,7 @@ public class GetRequestResult
 {
     private String displayOID;
     private String numericOID;
-    private String oidValue;
+    private final String oidValue;
     
     public GetRequestResult(final String displayOID, final String numericOID, final String value)
     {
@@ -47,6 +47,7 @@ public class GetRequestResult
         return oidValue;
     }
     
+	@Override
     public String toString()
     {
         return displayOID + ": " + oidValue;
