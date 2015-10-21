@@ -150,7 +150,7 @@ public class MIBNavigator
 
         while(keys.hasMoreElements())
         {
-            String nextKey = (String)(keys.nextElement());
+            String nextKey = keys.nextElement().toString();
             if(nextKey.toLowerCase().contains("font"))
                 UIManager.put(nextKey, appFont);
         }
